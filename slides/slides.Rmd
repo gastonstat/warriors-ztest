@@ -1,0 +1,69 @@
+---
+title: "Two Sample Z-test"
+output: ioslides_presentation
+---
+
+```{r echo = FALSE}
+source('../code/functions/two-sample-ztest.R')
+```
+
+## Golden State Warriors
+
+![warriors-logo](../images/warriors-logo.jpg)
+
+## Average Scored Points per Game
+
+```{r echo = FALSE}
+# read scores
+load('../data/clean/scores.RData')
+
+# random samples of scores
+set.seed(45678)
+size <- 50
+srs15 <- sample(scores15, size = size)
+srs16 <- sample(scores16, size = size)
+
+# two sample z-test
+ztest <- two_sample_ztest(srs15, srs16)
+```
+
+- Simple Random Sample of `r size` games
+
+### Season 2014-2015
+
+- Avg score per game = `r round(mean(srs15), 3)`
+- Std Dev sample = `r round(sd(srs15), 3)`
+
+### Season 2015-2016
+
+- Avg score per game = `r round(mean(srs16), 3)`
+- Std Dev sample = `r round(sd(srs16), 3)`
+
+
+## Hypothesis
+
+### Null hypothesis
+
+There's not a real difference between average scores
+
+### Alternative hypothesis
+
+Avg Score p/game 2016 > Avg Score p/game 2015
+
+
+## Z-Statitic and P-value
+
+$$
+z = \frac{Obs Difference - Exp Difference}{SE}
+$$
+
+- Obs Difference = $Avg_{2015} - Avg_{2016}$
+- Expected Difference = 0
+- Std Error Difference = $\sqrt{SD_{2015}^2 + SD_{2016}^2}$
+
+
+## Significance Test
+
+- Z-statistic = `r round(ztest$statistic, 3)`
+- P-value = `r round(ztest$pvalue, 3)`
+
